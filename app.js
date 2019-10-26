@@ -17,7 +17,7 @@ var paddleDx = 7;
 
 // Controller Variables
 var rightKeyIsPressed, leftKeyIsPressed;
-var lost = false;
+var win = lost = false;
 
 // Blocks variables
 var blockWidth = 50;
@@ -140,11 +140,11 @@ function draw() {
 	}
 
 	// Make ball's speed increase according to number of blocks remaining.
-	speedMultiplier = blocksCount < 20? 1.1 : speedMultiplier;
-	speedMultiplier = blocksCount < 16? 1.2 : speedMultiplier;
-	speedMultiplier = blocksCount < 12? 1.3 : speedMultiplier;
-	speedMultiplier = blocksCount < 8? 1.4 : speedMultiplier;
-	speedMultiplier = blocksCount < 4? 1.5 : speedMultiplier;
+	speedMultiplier = blocksCount < 20? 1.2 : speedMultiplier;
+	speedMultiplier = blocksCount < 16? 1.4 : speedMultiplier;
+	speedMultiplier = blocksCount < 12? 1.6 : speedMultiplier;
+	speedMultiplier = blocksCount < 08? 1.8 : speedMultiplier;
+	speedMultiplier = blocksCount < 04? 2.0 : speedMultiplier;
 	console.log(blocksCount + " " + speedMultiplier);
 
 	x += dx * speedMultiplier;
@@ -160,8 +160,10 @@ function draw() {
 
 	// Check if win by checking 
 	// number of blocks remaining.
-	if(blocksCount == 0)
+	if(blocksCount == 0){
 		win = true;
+		alert("MENANG. POWER TER0X");
+	}
 
 	if(!lost && !win) requestAnimationFrame(draw);
 }
