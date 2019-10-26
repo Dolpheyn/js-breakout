@@ -7,6 +7,7 @@ var y = canvas.height-30;
 var dx = 2;
 var dy = -2;
 var ballRadius = 10;
+var speedMultiplier = 1;
 
 // Paddle Variables
 var paddleHeight = 10;
@@ -113,12 +114,6 @@ function draw() {
 		dy = -dy;
 	}
 
-	// Ball passing bottom wall detection.
-	if( y + dy > canvas.height + ballRadius){
-		console.log("kalah");
-		alert("KALAH. LOPEK. PONDAN.");
-		lost = true;
-	}
 	
 	// Ball and paddle collison detection.
 	if( y + dy > canvas.height - paddleHeight - ballRadius && x + dx < (paddleX + paddleWidth) && x + dx > paddleX){
@@ -144,11 +139,31 @@ function draw() {
 		}
 	}
 
-	x += dx;
-	y += dy;
+	// Make ball's speed increase according to number of blocks remaining.
+	speedMultiplier = blocksCount < 20? 1.1 : speedMultiplier;
+	speedMultiplier = blocksCount < 16? 1.2 : speedMultiplier;
+	speedMultiplier = blocksCount < 12? 1.3 : speedMultiplier;
+	speedMultiplier = blocksCount < 8? 1.4 : speedMultiplier;
+	speedMultiplier = blocksCount < 4? 1.5 : speedMultiplier;
+	console.log(blocksCount + " " + speedMultiplier);
 
-	
-	if(!lost) requestAnimationFrame(draw);
+	x += dx * speedMultiplier;
+	y += dy * speedMultiplier;
+
+	// Check if lost by detecting if
+	// ball move pass the bottom wall
+	if( y + dy > canvas.height + ballRadius){
+		console.log("kalah");
+		alert("KALAH. LOPEK. PONDAN.");
+		lost = true;
+	}
+
+	// Check if win by checking 
+	// number of blocks remaining.
+	if(blocksCount == 0)
+		win = true;
+
+	if(!lost && !win) requestAnimationFrame(draw);
 }
 
 createBlocks();
