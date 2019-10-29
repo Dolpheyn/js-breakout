@@ -2,11 +2,22 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
-	<title>JS Pong</title>
+	<title>JS Breakou</title>
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<canvas id="myCanvas" width="480" height="320"></canvas>
+	<p>This is a game inspired by a retro atari game "breakout".</p>
+	<p>
+	It has 6 levels with different blocks positions and ball speed. 
+	You control a paddle to bounce the ball upwards. You lose by getting
+	the ball fall below the paddle and you win by completing all the 6 
+	levels. Goodluck and have fun!
+	</p>
+	<center><p id='level'></p><center>
+	</br>
+	<canvas id="myCanvas" width="480" height="320"></canvas></br>
+	<button id='startBtn' onclick='startGame()'>Start</button>
+	<center>Press LEFT and RIGHT ARROW KEYS to move the paddle.<center>
 	<script src="app.js"></script>
 </body>
 </html>

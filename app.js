@@ -25,6 +25,20 @@ var blockHeight = 10;
 var blocks = [];
 var blocksCount;
 
+
+// Levels variables
+var currentLevel = 0;
+var levels = [ 
+	{ y: 5, dy: -2},
+	{ y: 5, dy: -3},
+	{ y: 45, dy: -3},
+	{ y: 45, dy: -3.5 },
+	{ y: 85, dy: -3.5 },
+	{ y: 85, dy: -4}
+];
+
+
+
 function keyDownHandler(event){
 
 	if(event.keyCode == 39)
@@ -45,9 +59,20 @@ function keyUpHandler(event){
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 
+
+function outputCurrentLevel(){
+	var levelText = document.getElementById('level');
+	var currentLevelText = "Current Level: " + (currentLevel + 1);
+	var currentSpeedText = "Current ball speed: " + (levels[currentLevel].dy/-2);
+
+	levelText.innerHTML = currentLevelText + "</br>" + currentSpeedText;
+	console.log(currentLevelText + "/n" + currentSpeedText);
+}
+
 function createBlocks(){
-	var nextY = 5;
+	var nextY = levels[currentLevel].y;
 	var nextX = 5;
+	blocks = [];
 	for(var i = 0; i < 3; i++){
 
 		for (var j = 0; j < 8; j++){
@@ -133,10 +158,12 @@ function draw() {
 			continue;
 		}
 
-		if((y + dy - ballRadius) < blocks[i].y || ( dy>0 && (y + dy - ballRadius) > (blocks[i].y + blockHeight) && ( y + dy - ballRadius) < blocks[i].y)){
-			if((x + dx) > blocks[i].x && (x + dx) < (blocks[i].x + blockWidth)){
-				blocks[i] = null;
-				dy = -dy;
+		if((x + dx) > blocks[i].x && (x + dx) < (blocks[i].x + blockWidth)){
+			if(y > blocks[i].y && (y + dy - ballRadius) < blocks[i].y || ( y < blocks[i].y && dy>0 && (y + dy - ballRadius) > (blocks[i].y))){
+				if((x + dx) > blocks[i].x && (x + dx) < (blocks[i].x + blockWidth)){
+					blocks[i] = null;
+					dy = -dy;
+				}
 			}
 		}
 	}
@@ -147,7 +174,7 @@ function draw() {
 	speedMultiplier = blocksCount < 12? 1.6 : speedMultiplier;
 	speedMultiplier = blocksCount < 08? 1.8 : speedMultiplier;
 	speedMultiplier = blocksCount < 04? 2.0 : speedMultiplier;
-	console.log(blocksCount + " " + speedMultiplier);
+	//console.log(blocksCount + " " + speedMultiplier);
 
 	x += dx * speedMultiplier;
 	y += dy * speedMultiplier;
@@ -156,20 +183,34 @@ function draw() {
 	// ball move pass the bottom wall
 	if( y + dy > canvas.height + ballRadius){
 		console.log("kalah");
-		alert("KALAH. LOPEK. PONDAN.");
+		alert("TOO BAD, YOU LOST!");
 		lost = true;
 	}
 
-	// Check if win by checking 
-	// number of blocks remaining.
+	// Check if the current level is won by checking 
+	// if there are no blocks remaining.
+	// If its the last level and the level is won, alert
+	// the user for winning the entire game.
 	if(blocksCount == 0){
-		win = true;
-		alert("MENANG. POWER TER0X");
+		if(currentLevel == levels.length-1){
+			win = true;
+			alert("CONGRATULATIONS, YOU HAVE WON!");
+		}
+		else{
+			currentLevel++;
+			outputCurrentLevel();
+			createBlocks();
+		}
 	}
 
 	if(!lost && !win) requestAnimationFrame(draw);
 }
 
+outputCurrentLevel();
 createBlocks();
 drawBlocks();
-requestAnimationFrame(draw);
+function startGame(){
+	var startButton = document.getElementById('startBtn');
+	startButton.style.display = 'none';
+	requestAnimationFrame(draw);
+}
