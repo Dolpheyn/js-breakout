@@ -1,3 +1,3 @@
-# js-WallBreaker
+# js-breakout
 
-## Retro Wall Breaker game using vanilla JavaScript.
+## Retro breakout game using vanilla JavaScript.
