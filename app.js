@@ -6,7 +6,7 @@ var x = canvas.width/2;
 var y = canvas.height-30;
 var dx = 2;
 var dy = -2;
-var ballRadius = 10;
+var ballRadius = 5;
 var speedMultiplier = 1;
 
 // Paddle Variables
@@ -129,12 +129,14 @@ function draw() {
 
 	// Ball and blocks collision detection.
 	for(var i = 0; i<blocks.length; i++){
-		if(blocks[i] != null){
-			if((y + dy - ballRadius) < blocks[i].y){
-				if((x + dx) > blocks[i].x && (x + dx) < (blocks[i].x + blockWidth)){
-					blocks[i] = null;
-					dy = -dy;
-				}
+		if(blocks[i] == null){
+			continue;
+		}
+
+		if((y + dy - ballRadius) < blocks[i].y || ( dy>0 && (y + dy - ballRadius) > (blocks[i].y + blockHeight) && ( y + dy - ballRadius) < blocks[i].y)){
+			if((x + dx) > blocks[i].x && (x + dx) < (blocks[i].x + blockWidth)){
+				blocks[i] = null;
+				dy = -dy;
 			}
 		}
 	}
